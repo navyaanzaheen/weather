@@ -107,7 +107,7 @@ export default function Weather() {
   return (
     <div className='body text-center'>
       <div className="heading text-center">
-        <h1>Weathather App</h1>
+        <h1>Weather App</h1>
       </div>
 
       <div className="input-group mt-5">
