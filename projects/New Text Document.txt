@@ -1,0 +1,3 @@
+-country capital with full name
+-city weather image
+-loader 
