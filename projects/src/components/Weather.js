@@ -9,9 +9,7 @@ export default function Weather() {
   const [locationEnabled, setLocationEnabled] = useState(true);
   const [loading, setLoading] = useState(true);
   const [showMore, setShowMore] = useState(false);
-  const [citySearchAttempted, setCitySearchAttempted] = useState(false); // Track city search
-
-
+  const [citySearchAttempted, setCitySearchAttempted] = useState(false);
 
   const cityOnChange = (event) => {
     setCity(event.target.value);
@@ -29,7 +27,7 @@ export default function Weather() {
           (err) => {
             setLocationEnabled(false);
             if (setError) {
-              setError(err.message);
+              setError("Geolocation failed. Please enable geolocation or enter a city name."); // More general error
             }
             setLoading(false);
           }
@@ -37,7 +35,7 @@ export default function Weather() {
       } else {
         setLocationEnabled(false);
         if (setError) {
-          setError("Geolocation is not supported by your browser.");
+          setError("Geolocation is not supported by your browser. Please enter a city name."); // More general error
         }
         setLoading(false);
       }
@@ -148,9 +146,6 @@ export default function Weather() {
     );
   }
 
-
-  
-
   return (
     <div className='body text-center'>
       <div className="heading text-center">
@@ -168,11 +163,7 @@ export default function Weather() {
           onChange={cityOnChange}
           disabled={loading}
         />
-        {loading && city && (
-          <div className="input-group-append">
-            
-          </div>
-        )}
+        {loading && city && <div className="input-group-append"></div>}
       </div>
 
       <div className="button mt-5">
@@ -195,7 +186,8 @@ export default function Weather() {
 
       {weatherData && !loading && (
         <div className='text-center mt-5'>
-          {error && locationEnabled && (
+          {/* Geolocation error is now displayed here, but only when locationEnabled is false. */}
+          {error && !citySearchAttempted && !locationEnabled && (
             <p style={{ color: 'red' }}>{error}</p>
           )}
 
@@ -212,8 +204,7 @@ export default function Weather() {
           <button onClick={toggleShowMore} className="btn btn-primary">
             Show More
           </button>
-
-          </div>
+        </div>
       )}
     </div>
   );
