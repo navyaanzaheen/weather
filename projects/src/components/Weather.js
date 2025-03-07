@@ -154,7 +154,7 @@ export default function Weather() {
   <FaTint className="icon" /> Humidity: {weatherData.main.humidity}%
 </p>
 <p className="left">
-  <FaThermometerHalf className="icon" /> Feels Like: {Math.round(
+  <FaThermometerHalf className="icon"/> Feels Like: {Math.round(
     weatherData.main.feels_like
   )}°C
 </p>
@@ -168,7 +168,7 @@ export default function Weather() {
     weatherData.main.temp_max
   )}°C
 </p>
-            <button onClick={handleBack} className="btn btn-primary mx-5 px-4">
+            <button onClick={handleBack} className="btn btn-primary back">
               Back
             </button>
           </div>
@@ -181,6 +181,8 @@ export default function Weather() {
     if (!weatherData) return null;
     return (
       <div className="weather-card">
+
+
         {weatherData.weather[0].icon && (
           <img
             src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`}
@@ -189,17 +191,15 @@ export default function Weather() {
           />
         )}
 
-        <div className="weather-info">
+        
 
-        <p className='text-center'>
-         
-         
-          <span className="circled-temp text-center">{Math.ceil(weatherData.main.temp)}°C</span>
+        <p className='temp'>
+        <span className="circled-temp">{Math.ceil(weatherData.main.temp)}°C</span>
         </p>
 
 
         <p>
-            <FaCity className="icon" />
+            <FaCity className="icon"/>
             City: {weatherData.name}
           </p>
 
@@ -213,7 +213,7 @@ export default function Weather() {
             <FaFlag className="icon" />
             Country: {getFullCountryName(weatherData.sys.country)}
           </p>
-        </div>
+        
 
 <div className="weather-card-buttons">
     <button onClick={toggleShowMore} className="btn btn-primary">
