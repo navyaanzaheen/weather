@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import '../App.css';
+import {FaMap, FaFlag ,FaCity, FaTint, FaThermometerHalf} from 'react-icons/fa';
+import '../WeatherCard.css';
 
 export default function Weather() {
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
   const [city, setCity] = useState('');
-  const apiKey = "aa26a22df55841802f3e3b0c8bfe299e";
+  const apiKey = 'aa26a22df55841802f3e3b0c8bfe299e';
   const [locationEnabled, setLocationEnabled] = useState(true);
   const [loading, setLoading] = useState(true);
   const [showMore, setShowMore] = useState(false);
@@ -21,13 +23,20 @@ export default function Weather() {
         navigator.geolocation.getCurrentPosition(
           (position) => {
             setLocationEnabled(true);
-            console.log("Latitude:", position.coords.latitude, "Longitude:", position.coords.longitude);
+            console.log(
+              'Latitude:',
+              position.coords.latitude,
+              'Longitude:',
+              position.coords.longitude
+            );
             fetchWeather(position.coords.latitude, position.coords.longitude);
           },
           (err) => {
             setLocationEnabled(false);
             if (setError) {
-              setError("Geolocation failed. Please enable geolocation or enter a city name."); // More general error
+              setError(
+                'Geolocation failed. Please enable geolocation or enter a city name.'
+              );
             }
             setLoading(false);
           }
@@ -35,7 +44,9 @@ export default function Weather() {
       } else {
         setLocationEnabled(false);
         if (setError) {
-          setError("Geolocation is not supported by your browser. Please enter a city name."); // More general error
+          setError(
+            'Geolocation is not supported by your browser. Please enter a city name.'
+          );
         }
         setLoading(false);
       }
@@ -51,7 +62,7 @@ export default function Weather() {
       );
 
       if (!response.ok) {
-        throw new Error("Failed to fetch weather data.");
+        throw new Error('Failed to fetch weather data.');
       }
       const data = await response.json();
       setWeatherData(data);
@@ -69,7 +80,7 @@ export default function Weather() {
     setCitySearchAttempted(true);
     if (!city) {
       if (setError) {
-        setError("Please enter a city name.");
+        setError('Please enter a city name.');
       }
       return;
     }
@@ -96,9 +107,11 @@ export default function Weather() {
       setWeatherData(data);
       setCity('');
     } catch (err) {
-      console.error("Error fetching weather data:", err);
+      console.error('Error fetching weather data:', err);
       if (setError) {
-        setError(err.message || "Error fetching weather data. Please check the city name.");
+        setError(
+          err.message || 'Error fetching weather data. Please check the city name.'
+        );
       }
       setWeatherData(null);
     } finally {
@@ -111,7 +124,7 @@ export default function Weather() {
       const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
       return regionNames.of(countryCode);
     } catch (error) {
-      console.error("Error getting country name:", error);
+      console.error('Error getting country name:', error);
       return countryCode;
     }
   };
@@ -126,18 +139,36 @@ export default function Weather() {
 
   if (showMore) {
     return (
-      <div className='body text-center'>
+      <div className="body text-center">
         <div className="heading text-center">
           <h1>Weather Details</h1>
         </div>
+
         {weatherData && (
-          <div className="mt-5">
-            <p>City: {weatherData.name}</p>
-            <p>Humidity: {weatherData.main.humidity}%</p>
-            <p>Feels Like:{Math.round(weatherData.main.feels_like)}°C</p>
-            <p>Minimum Temerature:{Math.round(weatherData.main.temp_min)}°C</p>
-            <p>Maximum Temerature:{Math.round(weatherData.main.temp_max)}°C</p>
-            <button onClick={handleBack} className="btn btn-primary">
+          <div className="mt-5 weather-card">
+
+<p className="left">
+  <FaCity className="icon" /> City: {weatherData.name}
+</p>
+<p className="left">
+  <FaTint className="icon" /> Humidity: {weatherData.main.humidity}%
+</p>
+<p className="left">
+  <FaThermometerHalf className="icon" /> Feels Like: {Math.round(
+    weatherData.main.feels_like
+  )}°C
+</p>
+<p>
+  <FaThermometerHalf className="icon" /> Minimum Temperature: {Math.round(
+    weatherData.main.temp_min
+  )}°C
+</p>
+<p>
+  <FaThermometerHalf className="icon" /> Maximum Temperature: {Math.round(
+    weatherData.main.temp_max
+  )}°C
+</p>
+            <button onClick={handleBack} className="btn btn-primary mx-5 px-4">
               Back
             </button>
           </div>
@@ -146,34 +177,97 @@ export default function Weather() {
     );
   }
 
+  function WeatherCard({ weatherData, getFullCountryName, toggleShowMore }) {
+    if (!weatherData) return null;
+    return (
+      <div className="weather-card">
+        {weatherData.weather[0].icon && (
+          <img
+            src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`}
+            alt="Weather Icon"
+            className="weather-icon"
+          />
+        )}
+
+        <div className="weather-info">
+
+        <p className='text-center'>
+         
+         
+          <span className="circled-temp text-center">{Math.ceil(weatherData.main.temp)}°C</span>
+        </p>
+
+
+        <p>
+            <FaCity className="icon" />
+            City: {weatherData.name}
+          </p>
+
+          
+          
+          <p>
+            <FaMap className="icon" />
+            Description: {weatherData.weather[0].description}
+          </p>
+          <p>
+            <FaFlag className="icon" />
+            Country: {getFullCountryName(weatherData.sys.country)}
+          </p>
+        </div>
+
+<div className="weather-card-buttons">
+    <button onClick={toggleShowMore} className="btn btn-primary">
+        Show More
+    </button>
+</div>
+
+
+      </div>
+    );
+  }
+
   return (
-    <div className='body text-center'>
+    <div className="body text-center">
       <div className="heading text-center">
         <h1>Weather App</h1>
       </div>
 
-      <div className="input-group mt-5">
+      <div className="input-with-icon mt-5">
         <input
           type="text"
-          className="form-control"
-          value={loading && city ? "Loading..." : city}
-          placeholder={loading && !city ? "Loading..." : "Enter city name"}
+          className="city-input"
+          value={loading && city ? 'Loading...' : city}
+          placeholder={loading && !city ? 'Loading...' : 'Enter city name'}
           aria-label="Username"
           aria-describedby="addon-wrapping"
           onChange={cityOnChange}
+          onKeyDown={(event)=>{
+              if(event.key==="Enter"){
+                fetchWeatherData();
+              }
+          }}
+
           disabled={loading}
         />
+        <span className="magnifying-glass-icon" onClick={fetchWeatherData}>
+          &#128269;
+        </span>
         {loading && city && <div className="input-group-append"></div>}
       </div>
 
       <div className="button mt-5">
-        <button type="button" className="btn btn-danger" onClick={fetchWeatherData} disabled={loading}>
+        <button
+          type="button"
+          className="btn btn-danger"
+          onClick={fetchWeatherData}
+          disabled={loading}
+        >
           Get Weather Info
         </button>
       </div>
 
       <div className="error mt-3">
-        {citySearchAttempted && error && <p style={{ color: "red" }}>{error}</p>}
+        {citySearchAttempted && error && <p style={{ color: 'red' }}>{error}</p>}
       </div>
 
       {loading && (
@@ -185,25 +279,16 @@ export default function Weather() {
       )}
 
       {weatherData && !loading && (
-        <div className='text-center mt-5'>
-          {/* Geolocation error is now displayed here, but only when locationEnabled is false. */}
+        <div className="text-center mt-5">
           {error && !citySearchAttempted && !locationEnabled && (
             <p style={{ color: 'red' }}>{error}</p>
           )}
 
-          {weatherData.weather[0].icon && (
-            <img
-              src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`}
-              alt="Weather Icon"
-            />
-          )}
-          <p>Temperature:{Math.ceil(weatherData.main.temp)}°C</p>
-          <p>City: {weatherData.name}</p>
-          <p>Description:{weatherData.weather[0].description}</p>
-          <p>Country: {getFullCountryName(weatherData.sys.country)}</p>
-          <button onClick={toggleShowMore} className="btn btn-primary">
-            Show More
-          </button>
+          <WeatherCard
+            weatherData={weatherData}
+            getFullCountryName={getFullCountryName}
+            toggleShowMore={toggleShowMore}
+          />
         </div>
       )}
     </div>
