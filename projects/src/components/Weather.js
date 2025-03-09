@@ -206,11 +206,11 @@ export default function Weather() {
           
           
           <p>
-            <FaMap className="icon" />
+            <FaMap className="icon"/>
             Description: {weatherData.weather[0].description}
           </p>
           <p>
-            <FaFlag className="icon" />
+            <FaFlag className="icon"/>
             Country: {getFullCountryName(weatherData.sys.country)}
           </p>
         
