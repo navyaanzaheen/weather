@@ -31,11 +31,11 @@
   color: #444;
 }
 
-.weather-info .icon {
+/* .weather-info .icon {
   margin-right: 15px;
   color: #007bff;
   font-size: 1.3em;
-}
+} */
 
 .weather-card-buttons {
   text-align: center;
@@ -53,7 +53,7 @@
   cursor: pointer;
   font-size: 17px;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  margin-right: 10.5ex;
+  margin-right: 4rem;
 }
 
 .weather-card-buttons button:hover {
@@ -63,10 +63,12 @@
 
 .left {
   text-align: left;
+  margin-right: 5.1rem;
 }
 
 .icon {
   color: #007bff;
+  margin-left: 50px;
 }
 
 
@@ -84,13 +86,19 @@
 
 }
 
-.temp{
-  margin-left: 6.5ex;
-}
 
 
 .back{
   padding: 10px 20px;
+  margin-left: 6rem;
 
 }
 
+
+.temp{
+  margin-left: 5rem;
+}
+
+.weather-icon{
+  margin-left:4.6rem;
+}
