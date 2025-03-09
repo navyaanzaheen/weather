@@ -168,7 +168,7 @@ export default function Weather() {
     weatherData.main.temp_max
   )}°C
 </p>
-            <button onClick={handleBack} className="btn btn-primary back">
+            <button onClick={handleBack} className="btn btn-primary back mt-5">
               Back
             </button>
           </div>
